@@ -5,21 +5,16 @@ from cryptography.fernet import Fernet
 from colorama import Fore, Back, Style
 import time
 
-CONNECTION_STRING = "" #Add MongoDB database link
+CONNECTION_STRING = "" #Add MongoDB connection string
 
 
 def clr():
     os.system('cls')
 
 
-def write_key():
+def generate_key():
     key = Fernet.generate_key() 
-    with open("key.key", "wb") as key_file: 
-        key_file.write(key) 
-
-
-def load_key():
-    return open("key.key", "rb").read() 
+    print(key)
 
 
 def insertAccount(key):
@@ -68,9 +63,9 @@ def insertAccount(key):
         twofa_app = f.encrypt('NaN'.encode())
 
     clr()
-    data_registo = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    last_seen = data_registo
-    last_update = data_registo
+    regist_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    last_seen = regist_date
+    last_update = regist_date
     
     try:
         with MongoClient(CONNECTION_STRING) as client:
@@ -85,9 +80,9 @@ def insertAccount(key):
                 "password": password,
                 "twofa":twofa,
                 "twofa_app": twofa_app,
-                "data_registo": data_registo,
-                "last_seen": data_registo,
-                "last_update": data_registo
+                "regist_date": regist_date,
+                "last_seen": regist_date,
+                "last_update": regist_date
             }    
             
             result = collection.insert_one(new_document)
@@ -110,7 +105,7 @@ def listAccounts():
 
             projection = {
                 "site": 1,
-                "data_registo": 1,
+                "regist_date": 1,
                 "last_seen": 1,
                 "last_update": 1
             }
@@ -120,7 +115,7 @@ def listAccounts():
             print(Fore.RED + Back.WHITE + "{:<20} | {:<30} | {:<30} | {:<30}".format("SITE", "REGISTRATION DATE", "LAST TIME OPENED", "LAST UPDATE"))
 
             for document in result:
-                print(Fore.GREEN + Back.BLACK + "{:<20} | {:<30} | {:<30} | {:<30}\n".format(document.get("site"), document.get("data_registo"), document.get("last_seen"), document.get("last_update")))
+                print(Fore.GREEN + Back.BLACK + "{:<20} | {:<30} | {:<30} | {:<30}\n".format(document.get("site"), document.get("regist_date"), document.get("last_seen"), document.get("last_update")))
 
             print(Fore.RED + Back.WHITE + "{:<20} | {:<30} | {:<30} | {:<30} {}".format("SITE", "REGISTRATION DATE", "LAST TIME OPENED", "LAST UPDATE", ""+ Style.RESET_ALL))
 
@@ -164,7 +159,7 @@ def viewAccount(key):
                             twofa = result.get("twofa")
                             twofa_app = result.get("twofa_app")
 
-                            print(Fore.GREEN + Back.BLACK + "{:<15} | {:<25} | {:<15} | {:<20} | {:<10} | {:<10} | {:<30} | {:<30} | {:<30} \n".format(result.get("site"), f.decrypt(email).decode(), f.decrypt(username).decode(), f.decrypt(password).decode(), f.decrypt(twofa).decode(), f.decrypt(twofa_app).decode(), result.get("data_registo"), result.get("last_seen"), result.get("last_update")))
+                            print(Fore.GREEN + Back.BLACK + "{:<15} | {:<25} | {:<15} | {:<20} | {:<10} | {:<10} | {:<30} | {:<30} | {:<30} \n".format(result.get("site"), f.decrypt(email).decode(), f.decrypt(username).decode(), f.decrypt(password).decode(), f.decrypt(twofa).decode(), f.decrypt(twofa_app).decode(), result.get("regist_date"), result.get("last_seen"), result.get("last_update")))
 
                             print(Fore.RED + Back.WHITE + "{:<15} | {:<25} | {:<15} | {:<20} | {:<10} | {:<10} | {:<30} | {:<30} | {:<30} {}".format("SITE", "EMAIL", "USERNAME", "PASSWORD", "2FA", "2FA APP", "REGISTARTION DATE", "LAST TIME OPENED", "LAST UPDATE",  ""+ Style.RESET_ALL))
                             
