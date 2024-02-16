@@ -8,7 +8,7 @@ That key is crucial for the password manager. Once lost is impossible to recover
 After getting the key you can toggle the comment line again or simply delete the line.
 
 ### FUNCTIONS.PY
-After creating an account and a database in _MongoDB Atlas_, copy the connection string that is provided after selecting the database:
+After creating an account and a database in _MongoDB Atlas_, copy the connection string that is provided after selecting the database: <br>
 **Overview** > **Connect** > **Compass** 
 Don´t forgett to replace the field _<password>_ with your password.
 Open the file functions.py and add the connection string to the constant variable in line 8.
