@@ -10,5 +10,5 @@ After getting the key you can toggle the comment line again or simply delete the
 ### FUNCTIONS.PY
 After creating an account and a database in _MongoDB Atlas_, copy the connection string that is provided after selecting the database: <br>
 **Overview** > **Connect** > **Compass** <br>
-Don´t forgett to replace the field _<password>_ with your password.
+Don´t forget to replace the field _<password>_ with your password. <br>
 Open the file functions.py and add the connection string to the constant variable in line 8.
