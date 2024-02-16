@@ -1,8 +1,5 @@
 from functions import *
 
-#At first time run the following function and store the key that is between the quotes. 
-#Then delete the function and use your new secret key to work with the password manager.
-
 #generate_key()
 
 clr()
